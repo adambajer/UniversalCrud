@@ -1,0 +1,29 @@
+
+<div class="modal fade" id="addModal2" tabindex="-1" aria-labelledby="addModalLabel2" aria-hidden="true">
+    <div class="modal-dialog shadow border-success">
+      <div class="modal-content border-success-subtle bg-transparent bg-opacity-50">
+        <div class="modal-header border-black border-primary-subtle">
+          <h3 class="text-success">Add page</h3>
+          <button type="button" class="btn-close shadow" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="/crud/pages/create">
+
+            <input type="text" class="form-control border-success-subtle mb-3" placeholder="Enter new page name"
+              name="Name" id="Name">
+            <textarea name="ContentData" class="form-control border-success-subtle" rows="20"
+              placeholder="Enter page text"></textarea>
+            <input name="CreatedBy">
+            <input name="ContentID">
+            <div class="d-flex justify-content-between">
+              <div></div>
+              <button type="submit" class="btn btn-outline-success shadow">
+                <i class="bi bi-plus-circle-fill"></i>
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

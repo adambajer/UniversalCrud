@@ -1,0 +1,89 @@
+<script>
+
+    var addTable = document.getElementById('addTable');
+    const tableInput = document.getElementById('table_name');
+  
+    addTable.addEventListener('shown.bs.modal', function () {
+      tableInput.focus();
+    });
+  
+    const columnsContainer = document.getElementById('columns-container');
+  
+    tableInput.addEventListener('keypress', function (event) {
+  
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (tableInput !== '') {
+          addNewColumn();
+        }
+      }
+    });
+  
+    tableInput.addEventListener('blur', function () {
+      addNewColumn();
+    });
+  
+    function addNewColumn() {
+      const tableName = tableInput.value;
+      if (tableName === "") {
+        showToast("Please enter the table name first.");
+        return;
+      }
+  
+      const columnInputs = columnsContainer.querySelectorAll('.column-input');
+      const lastColumnInput = columnInputs[columnInputs.length - 1];
+  
+      if (lastColumnInput) {
+        const columnNameInput = lastColumnInput.querySelector('input[name="column_name[]"]');
+        if (columnNameInput.value === "") {
+          showToast("Please fill in the previous column name before adding a new column.");
+          return;
+        }
+      }
+  
+      const columnInput = document.createElement('div');
+      columnInput.classList.add('column-input');
+      columnInput.innerHTML = `
+      <div class="input-group mb-3">
+        <input type="text" class="xel form-control border-primary-subtle rounded-1 me-3" name="column_name[]" placeholder="Column Name">
+        <select class="column_type form-select border-primary-subtle rounded-1 me-3" name="data_type[]" onchange="showLengthInput(this)">
+          
+          <option value="VARCHAR" title="String">VARCHAR</option>
+          <option value="INT" title="Integer">INT</option>
+          <option value="DATE" title="Date">DATE</option>
+        </select>
+        <input type="text" name="data_length[]" style="display:inline-block " placeholder="Length" class=" me-3 form-control  rounded-1 border-primary-subtle">
+        <button type="button" class="btn btn-danger text-white rounded-1" onclick="removeColumnInput(this)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1 1v1h3V2a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1v1Zm-1 1H2v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4Z"></path>
+          </svg>
+        </button>
+      </div>
+      `;
+  
+      columnsContainer.appendChild(columnInput);
+  
+      const newColumnNameInput = columnInput.querySelector('input[name="column_name[]"]');
+      newColumnNameInput.focus();
+    }
+  
+    function removeColumnInput(button) {
+      const columnInput = button.closest('.column-input');
+      columnInput.remove();
+    }
+  
+    function showLengthInput(select) {
+      const lengthInput = select.parentNode.querySelector('input[name="data_length[]"]');
+      lengthInput.style.display = select.value === 'VARCHAR' ? 'inline-block' : 'none';
+    }
+  
+    function showToast(message) {
+      const toast = document.querySelector('.toast');
+      const toastBody = toast.querySelector('.toast-body');
+      toastBody.textContent = message;
+      new bootstrap.Toast(toast).show();
+    }
+  
+  </script>
+  

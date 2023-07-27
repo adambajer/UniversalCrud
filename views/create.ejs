@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRUD - <%= tableName %></title>
+    <style>
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .form-container form .form-group {
+            flex: 0 0 25%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create New Record - <%= tableName %></h2>
+        <hr>
+
+        <div class="form-container">
+            <form method="POST" action="/crud/<%= tableName %>">
+                <% for (let i = 0; i < columns.length; i++) { %>
+                    <div class="form-group">
+                        <label for="<%= columns[i] %>"><%= columns[i] %></label>
+                        <input type="text" class="form-control" id="<%= columns[i] %>" name="<%= columns[i] %>" placeholder="Enter <%= columns[i] %>">
+                    </div>
+                <% } %>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

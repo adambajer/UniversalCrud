@@ -1,0 +1,206 @@
+{
+  "info": {
+    "_postman_id": "ab877389-2c6d-473f-af15-ebd5cd646c35",
+    "name": "Universal CRUD API POSTMAN EXPORT (19. 07. 2023 12:19:42)",
+    "description": "This is an export from your Universal CRUD API EXPRESS JS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24237850",
+    "_collection_link": "http://localhost:3000/collection.json"
+  },
+  "item": [
+    {
+      "name": "C Settings",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"Js2LvU4fb4\",\"param\":\"KPSk1cfjT7\",\"value\":\"HSuJ3a1hSc\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/settings",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "settings"
+          ]
+        },
+        "description": "POST /settings"
+      },
+      "response": []
+    },
+    {
+      "name": "R Settings",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"param\":\"sNuiG7hDuM\",\"value\":\"YfUS49fhQy\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/settings",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "settings"
+          ]
+        },
+        "description": "GET /settings"
+      },
+      "response": []
+    },
+    {
+      "name": "api get pages",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"table_name\":\"1WmOtpgJso\",\"table_description\":\"HGYasryJhO\",\"column_name\":\"BWDoVznd0E\",\"data_type\":\"eL46vud83O\",\"data_length\":\"gOKstS7QTe\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/pages",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api/pages"
+          ]
+        },
+        "description": "GET /api/pages"
+      },
+      "response": []
+    },
+    {
+      "name": "C Table record",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"ai1vXVNkgx\",\"content\":\"TB5JXUA4GF\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/tables/:tableName",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "tables/:tableName"
+          ]
+        },
+        "description": "POST /tables/:tableName"
+      },
+      "response": []
+    },
+    {
+      "name": "C Page content",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"field\":\"w3yNsfbocv\",\"id\":\"Ptb4FFSwvn\",\"value\":\"yXucBXqxnL\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/saveContent",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "saveContent"
+          ]
+        },
+        "description": "POST /saveContent"
+      },
+      "response": []
+    },
+    {
+      "name": "R Page",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"content\":\"7SWPiWg25t\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/pages/delete/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "pages/delete/:id"
+          ]
+        },
+        "description": "GET /pages/delete/:id"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

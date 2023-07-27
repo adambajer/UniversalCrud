@@ -1,0 +1,32 @@
+<div class="modal fade " id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog shadow border-primary">
+      <div class="modal-content border-primary-subtle bg-transparent bg-opacity-50">
+        <div class="modal-header border-black border-primary-subtle">
+          <h3 class="text-primary">Add table
+          </h3>
+          <button type="button" class="btn-close shadow" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="/" onsubmit="return validateForm()">
+
+            <input type="text" class="form-control border-primary mb-3" placeholder="Enter new table name"
+              name="table_name" id="table_name" class="">
+            <div id="columns-container" class="">
+              <!-- Column inputs will be dynamically added here -->
+            </div>
+            <div class="d-flex justify-content-between  ">
+              <button type="button" class="btn btn-outline-success shadow" onclick="addNewColumn()">
+                <i class="bi bi-plus-circle-fill"></i>
+
+                </svg> Add column</button>
+              <button type="submit" class=" btn btn-outline-primary shadow">
+                <i class="bi bi-plus-circle-fill"></i>
+
+                Add</button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

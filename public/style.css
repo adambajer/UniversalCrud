@@ -1,0 +1,252 @@
+
+.icon-link {
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+  div.details {
+    transform: scale(0);  
+    transition: 0.5s;
+    position: absolute;
+    left:30px;
+    top:0px;
+    z-index: 99999;
+    
+  }
+ td.description {
+  overflow: hidden;
+  height: 30px;
+  max-height: 30px;
+  max-width: 200px;
+  transition: all 0.5s;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  }
+ 
+  td {
+    position: relative;
+  }
+
+  tr:hover div.details {
+    transition: all 0.5s;
+    transform: scale(1);
+    background: #eaeaea;
+    padding: 5px; 
+  }
+
+  .modal {
+    padding-top:10px;
+}
+
+/* Adjust the modal dialog width to fit the content */
+.modal-dialog {
+    width: auto !important;
+    max-width: 60% !important;
+    margin: 0 auto !important;
+}
+
+/* Ensure the modal content fits within the dialog */
+.modal-content {
+    width: auto !important;
+    max-width: 100% !important;
+    backdrop-filter: blur(10px);
+} 
+.toast {
+  backdrop-filter: blur(10px);
+  z-index: 999;
+}
+.modal-backdrop {
+  background-color: transparent;
+}
+.breadcrumb-fill {
+}
+.icon-link {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+.brcustom{
+  position: relative;
+  padding-left: 15px;
+}
+.brcustom::before {
+  content: " > ";
+  position: absolute;
+  left: 0px;
+}
+.toastcustom {
+  position: absolute; top: 20px; right: 20px;z-index: 99999;
+}  .back {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+small {
+  font-size: 0.8rem;
+  color: #aaa;
+  padding-left: 10px;
+  font-weight: 300;
+}
+
+/* CSS styles for the table and other elements */
+.editable {
+  cursor: pointer;
+ 
+}
+
+.editable input {
+  width: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+
+.save-btn {
+  display: none;
+}
+
+.modal {
+  padding-top:10px;
+}
+
+/* Adjust the modal dialog width to fit the content */
+.modal-dialog {
+  width: auto !important;
+  max-width: 60% !important;
+  margin: 0 auto !important;
+}
+
+/* Ensure the modal content fits within the dialog */
+.modal-content {
+  width: auto !important;
+  max-width: 100% !important;
+  backdrop-filter: blur(10px);
+} 
+.toast {
+backdrop-filter: blur(10px);
+}
+.modal-backdrop {
+background-color: transparent;
+}
+.bi::before { 
+}
+.icon-link {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+.delete-btn {
+  visibility: hidden;
+}
+tr:hover .delete-btn {
+  visibility: visible;
+}
+.edit-mode:focus {
+  box-shadow: 0 0 0.1rem 0.15rem rgba(255,0,0,0.5)     }
+  .breadcrumb-fill {
+      height: 100%;
+      display: flex; 
+      justify-content: center;
+      margin-bottom: 0;
+    }    .back {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+  }
+
+  small {
+      font-size: 0.8rem;
+      color: #aaa;
+      padding-left: 10px;
+      font-weight: 300;
+  }
+
+  /* CSS styles for the table and other elements */
+  .editable {
+      cursor: pointer;
+     
+  }
+
+  .editable input {
+      width: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+  }
+
+  .save-btn {
+      display: none;
+  }
+
+  .modal {
+      padding-top:10px;
+  }
+  .expand-sign {
+    cursor: pointer; 
+    display: inline-block;
+     width: 20px;
+    height: 20px;
+    left: -20px;
+    background-color: #aaa;
+  text-align: center;
+  
+  }
+  .customdropmenu  {
+    min-width: 300px;
+  }
+  .customdropmenu a {
+    text-decoration: none;
+  }
+  .children {
+    display: none;
+    margin-left: 15px;
+  }
+  .expanded {
+    display: block !important;
+  }
+  /* Adjust the modal dialog width to fit the content */
+  .modal-dialog {
+      width: auto !important;
+      max-width: 60% !important;
+      margin: 0 auto !important;
+  }
+
+  /* Ensure the modal content fits within the dialog */
+  .modal-content {
+      width: auto !important;
+      max-width: 100% !important;
+      backdrop-filter: blur(10px);
+  } 
+  .toast {
+    backdrop-filter: blur(10px);
+  }
+  .modal-backdrop {
+    background-color: transparent;
+  }
+  .dropdown-menu {
+    padding-bottom: 0px;
+    padding-top:0px;
+  }
+  .bi::before { 
+    }
+    .icon-link {
+      font-size: 1rem;
+      line-height: 1rem;
+    }
+    .delete-btn {
+      visibility: hidden;
+    }
+    tr:hover .delete-btn {
+      visibility: visible;
+    }
+    .edit-mode:focus {
+      box-shadow: 0 0 0.1rem 0.15rem rgba(255,0,0,0.5)     }
+      .breadcrumb-fill {
+          height: 100%;
+          display: flex; 
+          justify-content: center;
+          margin-bottom: 0;
+        }
+        .pruh {
+          background: #eaeaea;
+        }
