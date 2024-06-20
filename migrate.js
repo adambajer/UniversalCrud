@@ -38,6 +38,48 @@ const connection = mysql.createConnection({
   database: 'crud',
 });
 
+// Function to create the migration status table
+function createMigrationStatusTable(callback) {
+  const createMigrationStatusTable = `
+    CREATE TABLE IF NOT EXISTS migration_status (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      migration_done BOOLEAN
+    );
+  `;
+  connection.query(createMigrationStatusTable, (err) => {
+    if (err) {
+      console.error('Error creating migration_status table:', err);
+      callback(err);
+    } else {
+      callback();
+    }
+  });
+}
+
+// Function to check the migration status
+function checkMigrationStatus(callback) {
+  connection.query('SELECT * FROM migration_status WHERE migration_done = TRUE', (err, results) => {
+    if (err) {
+      console.error('Error checking migration status:', err);
+      callback(err);
+    } else {
+      callback(null, results.length > 0);
+    }
+  });
+}
+
+// Function to set the migration status
+function setMigrationStatus(callback) {
+  connection.query('INSERT INTO migration_status (migration_done) VALUES (TRUE)', (err) => {
+    if (err) {
+      console.error('Error updating migration status:', err);
+      callback(err);
+    } else {
+      callback();
+    }
+  });
+}
+
 // Connect to MySQL
 connection.connect((err) => {
   if (err) {
@@ -45,17 +87,183 @@ connection.connect((err) => {
     return;
   }
   console.log('Connected to the database http://localhost/phpmyadmin/index.php');
-  console.log('Server started at http://localhost:3000/ to the database');
+  console.log('Server started at http://localhost:3000/');
+
+  // Create migration status table and check status
+  createMigrationStatusTable((err) => {
+    if (err) return;
+
+    checkMigrationStatus((err, hasRun) => {
+      if (err) return;
+
+      if (!hasRun) {
+        console.log('Running migrations for the first time...');
+        runMigrations();
+        setMigrationStatus((err) => {
+          if (err) console.error('Error updating migration status:', err);
+        });
+      } else {
+        console.log('Migrations have already been run.');
+      }
+    });
+  });
 });
 
 
-// Set EJS as the view engine
-app.set('view engine', 'ejs');
+// Migration function
+function runMigrations() {
+  const createCrudSettingsTable = `
+    CREATE TABLE IF NOT EXISTS crudsettings (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      type VARCHAR(255),
+      param VARCHAR(255),
+      value VARCHAR(255)
+    );
+  `;
 
-// Parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
+  const createPagesTable = `
+    CREATE TABLE IF NOT EXISTS pages (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255),
+      parentid INT,
+      contentid INT,
+      createdby INT,
+      createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
 
-// Define the fetchPagesMiddleware function
+  const createCrudTablesTable = `
+    CREATE TABLE IF NOT EXISTS crudtables (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255),
+      tableid INT,
+      description TEXT,
+      createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      createdby INT
+    );
+  `;
+
+  const createUsersTable = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+
+  const createProductsTable = `
+    CREATE TABLE IF NOT EXISTS products (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      description TEXT,
+      price DECIMAL(10, 2) NOT NULL,
+      createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  const createContentTable = `
+    CREATE TABLE IF NOT EXISTS content (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      content TEXT
+    );
+  `;
+  const insertCrudSettings = `
+    INSERT INTO crudsettings (type, param, value) VALUES
+    ('color', 'primary', '#007bff'),
+    ('color', 'secondary', '#6c757d'),
+    ('color', 'warning', '#ffc107'),
+    ('color', 'danger', '#dc3545'),
+    ('color', 'success', '#28a745'),
+    ('color', 'navbarbg', '#343a40')
+    ON DUPLICATE KEY UPDATE value=VALUES(value);
+  `;
+  connection.query(createCrudSettingsTable, (err) => {
+    if (err) console.error('Error creating crudsettings table:', err);
+  });
+
+  connection.query(createPagesTable, (err) => {
+    if (err) console.error('Error creating pages table:', err);
+  });
+
+  connection.query(createCrudTablesTable, (err) => {
+    if (err) console.error('Error creating crudtables table:', err);
+  });
+
+  connection.query(createUsersTable, (err) => {
+    if (err) console.error('Error creating users table:', err);
+  });
+
+  connection.query(createProductsTable, (err) => {
+    if (err) console.error('Error creating products table:', err);
+  });
+  connection.query(createContentTable, (err) => {
+    if (err) console.error('Error creating content table:', err);
+  });
+  insertDefaultData();
+}
+
+function insertDefaultData() {
+  const insertCrudSettings = `
+    INSERT INTO crudsettings (type, param, value) VALUES
+    ('default', 'siteName', 'UniversalCrud'),
+    ('default', 'adminEmail', 'admin@example.com'),
+    ('color', 'primary', '#007bff'),
+    ('color', 'secondary', '#6c757d'),
+    ('color', 'warning', '#ffc107'),
+    ('color', 'danger', '#dc3545'),
+    ('color', 'success', '#28a745'),
+    ('color', 'navbarbg', '#343a40')
+    ON DUPLICATE KEY UPDATE value=VALUES(value);
+  `;
+
+  const insertPages = `
+  INSERT INTO pages (name, parentid, contentid, createdby) VALUES
+  ('Home', NULL, 1, 0),
+  ('About', NULL, 2, 0)
+  ON DUPLICATE KEY UPDATE name=VALUES(name);
+`;
+
+const insertCrudTables = `
+INSERT INTO crudtables (name, description, createdby) VALUES
+('users', 'User information table', 0),
+('products', 'Product information table', 0)
+ON DUPLICATE KEY UPDATE description=VALUES(description);
+`;
+  const insertContent = `
+  INSERT INTO content (content) VALUES
+  ('Welcome to the Home page'),
+  ('About us page content')
+  ON DUPLICATE KEY UPDATE content=VALUES(content);
+`;
+  connection.query(insertCrudSettings, (err) => {
+    if (err) console.error('Error inserting default data into crudsettings:', err);
+  });
+
+  connection.query(insertPages, (err) => {
+    if (err) console.error('Error inserting default data into pages:', err);
+  });
+
+  connection.query(insertCrudTables, (err) => {
+    if (err) console.error('Error inserting default data into crudtables:', err);
+  });
+  connection.query(insertContent, (err) => {
+    if (err) console.error('Error inserting default data into content:', err);
+  });
+}
+
+// Function to run SQL queries
+function query(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}// Define the fetchPagesMiddleware function
 function fetchPagesMiddleware(req, res, next) {
   connection.query('SELECT * FROM crudsettings', (err, settingsResult) => {
     if (err) {
@@ -67,6 +275,8 @@ function fetchPagesMiddleware(req, res, next) {
       param: setting.param,
       value: setting.value,
     }));
+    console.log('Fetched settings:', settings);
+
     connection.query('SELECT * FROM pages', (err, pagesResult) => {
       if (err) {
         console.error('Error fetching pages:', err);
@@ -76,7 +286,10 @@ function fetchPagesMiddleware(req, res, next) {
         id: page.id,
         name: page.name,
         parentid: page.parentid,
+        contentid: page.contentid,
       }));
+      console.log('Fetched pages:', pages);
+
       connection.query('SELECT * FROM crudtables', (err, crudtablesResult) => {
         if (err) {
           console.error('Error fetching crudtables:', err);
@@ -92,6 +305,8 @@ function fetchPagesMiddleware(req, res, next) {
           columns: [],
           recordCount: 0
         }));
+        console.log('Fetched crudtables:', crudtables);
+
         const promises = crudtables.map(table => {
           return new Promise((resolve, reject) => {
             connection.query(`SHOW COLUMNS FROM ${table.name}`, (err, columnsResult) => {
@@ -146,6 +361,8 @@ function fetchPagesMiddleware(req, res, next) {
             const urlParts = req.originalUrl.split('/');
             const activePage = urlParts[urlParts.length - 1];
             const nestedPages = buildNestedPages(pages, activePage);
+            console.log('Nested pages:', nestedPages);
+
             res.locals.pages = nestedPages;
             res.locals.settings = settings;
             res.locals.crudtables = crudtables;
@@ -197,7 +414,8 @@ app.get('/settings', (req, res) => {
   });
 });
 
-// U Settings 
+ 
+// U Settings
 app.put('/settings/:id', (req, res) => {
   var id = req.params.id;
   const { param, value } = req.body;
@@ -211,7 +429,6 @@ app.put('/settings/:id', (req, res) => {
     }
   });
 });
-
 
 // api get pages
 app.get('/api/pages', (req, res) => {
@@ -261,8 +478,7 @@ function query(sql, values) {
       }
     });
   });
-}
-// R Page
+}// R Page
 app.get('/pages/:pageName', async (req, res) => {
   try {
     const pageName = req.params.pageName;
@@ -274,19 +490,25 @@ app.get('/pages/:pageName', async (req, res) => {
     }
 
     const page = pageResults[0];
-
     const contentResults = await getContentById(page.contentid);
-console.log(page.contentid)
     if (contentResults.length === 0) {
       res.status(404).send('Content not found');
       return;
     }
 
     const content = contentResults[0].content;
-    console.log(content)
-
     const breadcrumbTrail = await buildBreadcrumbTrail(page.parentid, []);
     breadcrumbTrail.reverse();
+
+    console.log('Rendering page:', {
+      pageName: page.name,
+      pageId: page.contentid,
+      content: content,
+      parentId: page.parentid,
+      createdby: page.createdby,
+      createdat: page.createdat,
+      breadcrumbTrail: breadcrumbTrail
+    });
 
     res.render('pages', {
       pageName: page.name,
@@ -295,7 +517,6 @@ console.log(page.contentid)
       parentId: page.parentid,
       createdby: page.createdby,
       createdat: page.createdat,
-      content: content,
       breadcrumbTrail: breadcrumbTrail
     });
   } catch (error) {
@@ -337,6 +558,43 @@ function getContentById(contentid) {
     );
   });
 }
+ 
+ 
+// C Page
+app.post('/create/page', (req, res) => {
+  const parentid = req.body.parentid || null;
+  const { name, content } = req.body;
+  const newContent = { content: content };
+
+  connection.query('INSERT INTO content SET ?', newContent, (err, contentResult) => {
+    if (err) {
+      console.error('Error creating new content:', err);
+      res.status(500).send('Error creating new content');
+      return;
+    }
+    const contentId = contentResult.insertId;
+    console.log('Content inserted with ID:', contentId);
+    
+    const newPage = {
+      name: name,
+      createdby: 0,
+      contentid: contentId,
+      parentid: parentid || null,
+    };
+
+    connection.query('INSERT INTO pages SET ?', newPage, (err, pageResult) => {
+      if (err) {
+        console.error('Error creating new page:', err);
+        res.status(500).send('Error creating new page');
+        return;
+      }
+      console.log('Page inserted with ID:', pageResult.insertId);
+      res.redirect('/');
+    });
+  });
+});
+
+
 // C Table
 app.post('/table/create/', (req, res) => {
   const { table_name, table_description, column_name, data_type, data_length } = req.body;
@@ -375,20 +633,7 @@ app.post('/table/create/', (req, res) => {
   });
 });
 
-// C Table record
-app.post('/tables/:tableName', (req, res) => {
-  const tableName = req.params.tableName;
-  const newRecord = req.body; 
-  connection.query(`INSERT INTO ${tableName} SET ?`, newRecord, (err, result) => {
-    if (err) {
-      console.error('Error creating new record:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    res.redirect(`/tables/${tableName}`);
-  });
-});
-// R tables
+// R tables and pages
 app.get('/', (req, res) => {
   connection.query('SELECT id, name, description, createdby, createdat, tableid FROM crudtables', (err, crudtablesResult) => {
     if (err) {
@@ -408,6 +653,7 @@ app.get('/', (req, res) => {
         recordCount: 0
       };
     });
+
     const promises = crudtables.map(table => {
       return new Promise((resolve, reject) => {
         connection.query(`SHOW COLUMNS FROM ${table.name}`, (err, columnsResult) => {
@@ -437,16 +683,33 @@ app.get('/', (req, res) => {
       });
     });
 
-    Promise.all(promises)
-      .then(() => {
-        res.render('index', { crudtables: crudtables });
-      })
-      .catch(error => {
-        console.error('Error fetching table information:', error);
+    connection.query('SELECT * FROM pages', (err, pagesResult) => {
+      if (err) {
+        console.error('Error fetching pages:', err);
         res.status(500).send('Internal Server Error');
-      });
+        return;
+      }
+      const pages = pagesResult.map(page => ({
+        id: page.id,
+        name: page.name,
+        parentid: page.parentid,
+        contentid: page.contentid
+      }));
+      console.log('Fetched pages:', pages);
+
+      Promise.all(promises)
+        .then(() => {
+          console.log('Fetched crudtables:', crudtables);
+          res.render('index', { crudtables: crudtables, pages: pages });
+        })
+        .catch(error => {
+          console.error('Error fetching table information:', error);
+          res.status(500).send('Internal Server Error');
+        });
+    });
   });
 });
+
 // R Table
 app.get('/tables/:tableName', (req, res) => {
   const tableName = req.params.tableName;
@@ -486,7 +749,7 @@ app.get('/tables/:tableName', (req, res) => {
   };
 
   fetchTableData();
-});
+}); 
 
 // D Table
 app.get('/tables/:tableName/delete', (req, res) => {
@@ -537,6 +800,7 @@ app.post('/tables/:tableName/edit/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
 // D Table record
 app.delete('/tables/:tableName/delete/:id', (req, res) => {
   const tableName = req.params.tableName;
@@ -582,13 +846,11 @@ function buildBreadcrumbTrail(parentId, breadcrumbTrail) {
   });
 }
 
-//C Page
+// C Page
 app.post('/create/page', (req, res) => {
   const parentid = req.body.parentid || null;
   const { name, content } = req.body;
-  const newContent = {
-    content: content,
-  };
+  const newContent = { content: content };
 
   connection.query('INSERT INTO content SET ?', newContent, (err, contentResult) => {
     if (err) {
@@ -601,7 +863,7 @@ app.post('/create/page', (req, res) => {
       name: name,
       createdby: 0,
       contentid: contentId,
-      parentid: parentid || null, 
+      parentid: parentid || null,
     };
 
     connection.query('INSERT INTO pages SET ?', newPage, (err, pageResult) => {
@@ -615,7 +877,8 @@ app.post('/create/page', (req, res) => {
   });
 });
 
-//D Page
+
+// D Page
 app.get('/pages/delete/:id', (req, res) => {
   const pageId = req.params.id;
   const deletePageQuery = `DELETE FROM pages WHERE id = '${pageId}'`;
@@ -629,11 +892,18 @@ app.get('/pages/delete/:id', (req, res) => {
   });
 });
 
-//U Page content
+
+// U Page content
 app.post('/pages/update/:id', async (req, res) => {
   try {
-    const pageId = req.params.id;
+    const pageId = parseInt(req.params.id, 10);
     const { content } = req.body;
+
+    if (isNaN(pageId)) {
+      res.status(400).send('Invalid page ID');
+      return;
+    }
+
     const updateQuery = 'UPDATE content SET content = ? WHERE id = ?';
     await connection.query(updateQuery, [content, pageId]);
     res.redirect(`/pages/${pageId}`);

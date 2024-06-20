@@ -1,122 +1,100 @@
 <%- include('header.ejs') %>
 
-  <div class=" bg-transparent border-primary bg-opacity-50 toastcustom">
-    <div class="toast bg-transparent border-primary-subtle bg-opacity-50" role="alert" aria-live="assertive"
-      aria-atomic="true">
-      <div class="toast-header border-bottom border-primary-subtle">
-        <strong class="text-primary me-auto">Error!</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body"></div>
+<div class=" bg-transparent border-primary bg-opacity-50 toastcustom">
+  <div class="toast bg-transparent border-primary-subtle bg-opacity-50" role="alert" aria-live="assertive"
+    aria-atomic="true">
+    <div class="toast-header border-bottom border-primary-subtle">
+      <strong class="text-primary me-auto">Error!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
+    <div class="toast-body"></div>
   </div>
-  <%- include('navbar.ejs') %>
+</div>
 
-  <div class="row bg-warning-subtle align-items-center pruh ps-3 border-bottom border-bottom border-warning">
-    <div class="col-md-4">
+<%- include('navbar.ejs') %>
+
+<div class="row bg-warning-subtle align-items-center pruh ps-3 border-bottom border-bottom border-warning">
+  <div class="col-md-4">
     <%- include('breadcrumb.ejs') %>
   </div>
- <div class="col-md-4">
- <span class="d-flex text-warning">Homepage</span>
- 
-</div>
+  <div class="col-md-4">
+    <span class="d-flex text-warning">Homepage</span>
+  </div>
 
-    <div class=" col-md-4 text-end">
-      
-       <a href=""
-                class="text-warning p-2 d-inline-block"
-                 data-bs-toggle="collapse"
-                 data-bs-target="#collapseExample"  aria-expanded="true" aria-controls="collapseExample"><i class="bi bi-info-circle-fill "></i></a>
-       
+  <div class="col-md-4 text-end">
+    <a href="" class="text-warning p-2 d-inline-block" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+      aria-expanded="true" aria-controls="collapseExample"><i class="bi bi-info-circle-fill "></i></a>
   </div>
 </div>
- 
-  <div class="ms-3 me-3">
 
-   
+<div class="ms-3 me-3">
 
-<div class="row">
-    <div class="col-md-2 border-end  pt-2 pb-2">
+  <div class="row">
+    <div class="col-md-2 border-end pt-2 pb-2">
       <h3 class="text-success">Pages</h3>
-    
-</div>
+      <ul>
+        <% pages.forEach(page => { %>
+          <li>
+            <a href="/pages/<%= page.name %>">
+              <%= page.name %>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
 
-<div class="col-md-10 ps-3  pt-2 pb-2">
-  <h3 class="text-primary">Tables</h3>
-    <table class="table table-hover ">
-      <thead>
-        <tr>
-          <th class="border-bottom text-primary id">Id</th>
-          <th class="border-bottom text-primary name">Table</th>
-          <th class="border-bottom text-primary columns">Columns</th>
-          <th class="border-bottom text-primary records">Records</th>
-          <th class="border-bottom text-primary description">Description</th>
-          <th class="border-bottom text-primary  createdat">Created</th>
-          <th class="border-bottom text-primary records">Actions</th>
-        </tr>
-
-      </thead>
-      <tbody>
-
-        <% crudtables.forEach(table=> { %>
+    <div class="col-md-10 ps-3 pt-2 pb-2">
+      <h3 class="text-primary">Tables</h3>
+      <table class="table table-hover ">
+        <thead>
           <tr>
-            <td>
-              <%= table.id %>
-            </td>
-            <td class="table-name ">
-              <a href="/tables/<%= table.name %>">
-                <%= table.name %>
-              </a>
-            </td>
-            <td>
-              <div class="  ">
-                <%= table.columns.length %>
-
-              </div>
-
-              <div class="d-block-inline   details border p-2 shadow">
-                <% table.columns.forEach(column=> { %>
-
-                  <span><b>
-                      <%= column.name %>
-                    </b>
-                    <%= column.type %>
-                  </span><br>
-                  <% }) %>
-              </div>
-            </td>
-            <td class=" ">
-              <%= table.recordCount %>
-            </td>
-            <td class="  description" dataset="<%= table.description %>">
-              <% if (table.description) { %>
-                <%= table.description %>
-              <% } else { %>
-                Empty description
-              <% } %>
-            </td>
-            
-
-            <td class="createdat">
-              <%= table.createdat.toLocaleDateString('cs-CZ', { day: 'numeric' , month: 'numeric' , year: 'numeric' })
-                %>
-
-            </td>
-            <td>
-              <a href="/tables/<%= table.name %>" class="link-primary" title="View"><i class="bi bi-eye-fill"></i></a>
-              <a href="/tables/<%= table.name %>/delete" class="link-warning" title="Delete">
-                <i class="bi bi bi-trash"></i></a>
-            </td>
-
+            <th class="border-bottom text-primary id">Id</th>
+            <th class="border-bottom text-primary name">Table</th>
+            <th class="border-bottom text-primary columns">Columns</th>
+            <th class="border-bottom text-primary records">Records</th>
+            <th class="border-bottom text-primary description">Description</th>
+            <th class="border-bottom text-primary createdat">Created</th>
+            <th class="border-bottom text-primary records">Actions</th>
           </tr>
+        </thead>
+        <tbody>
+          <% crudtables.forEach(table => { %>
+            <tr>
+              <td><%= table.id %></td>
+              <td class="table-name ">
+                <a href="/tables/<%= table.name %>">
+                  <%= table.name %>
+                </a>
+              </td>
+              <td>
+                <div class="  "><%= table.columns.length %></div>
+                <div class="d-block-inline details border p-2 shadow">
+                  <% table.columns.forEach(column => { %>
+                    <span><b><%= column.name %></b> <%= column.type %></span><br>
+                  <% }) %>
+                </div>
+              </td>
+              <td class=" "><%= table.recordCount %></td>
+              <td class="description" dataset="<%= table.description %>">
+                <% if (table.description) { %>
+                  <%= table.description %>
+                <% } else { %>
+                  Empty description
+                <% } %>
+              </td>
+              <td class="createdat">
+                <%= table.createdat.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' }) %>
+              </td>
+              <td>
+                <a href="/tables/<%= table.name %>" class="link-primary" title="View"><i class="bi bi-eye-fill"></i></a>
+                <a href="/tables/<%= table.name %>/delete" class="link-warning" title="Delete"><i class="bi bi-trash"></i></a>
+              </td>
+            </tr>
           <% }) %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-<style>
- 
-</style>
 
     
     
