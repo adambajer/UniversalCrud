@@ -88,7 +88,7 @@
       <script>
         function saveContent(field, id) {
           const updatedValue = document.querySelector(`div[data-field="${field}"][data-id="${id}"]`).innerHTML;
-
+console.log(updatedValue);
           fetch(`/pages/update/${id}`, {
             method: 'POST',
             headers: {

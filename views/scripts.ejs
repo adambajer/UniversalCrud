@@ -140,24 +140,24 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error exporting collection:', error);
       });
   });
-});document.addEventListener('DOMContentLoaded', () => {
-  const elements = document.querySelectorAll('input[type="text"], textarea, .editable');
+});
+document.addEventListener('DOMContentLoaded', () => {
+  var elements = document.querySelectorAll('input, textarea, div.editable');
 
   elements.forEach(element => {
-      const groupClass = element.tagName.toLowerCase() === 'textarea' ? 'textarea-group' : 
-                         element.classList.contains('editable') ? 'editable' : 'input-group';
-      const wrapper = document.createElement('div');
-      wrapper.classList.add(groupClass);
+  
+      var wrapper = document.createElement('div');
+      wrapper.classList.add('group');
       element.parentNode.insertBefore(wrapper, element);
       wrapper.appendChild(element);
 
-      const micBtnRewrite = document.createElement('button');
+      var micBtnRewrite = document.createElement('button');
       micBtnRewrite.type = 'button';
       micBtnRewrite.classList.add('mic-btn','mic-rew');
       micBtnRewrite.innerHTML = '<span>Rewrite</span><i class="bi bi-mic-fill"></i>';
       wrapper.appendChild(micBtnRewrite);
 
-      const micBtnAppend = document.createElement('button');
+      var micBtnAppend = document.createElement('button');
       micBtnAppend.type = 'button';
       micBtnAppend.classList.add('mic-btn', 'mic-app');
       micBtnAppend.innerHTML = '<span>Add</span><i class="bi bi-mic-fill"></i>';
