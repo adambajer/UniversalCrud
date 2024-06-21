@@ -8,7 +8,7 @@
 
         <!-- Breadcrumb trail -->
  
-        <nav class="d-block align-middle" aria-label="breadcrumb">
+        <nav class=" align-middle " aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">
       
@@ -62,7 +62,7 @@
         </div>
 
         <div class="p-2 m-2">
-          <div class="editable" contenteditable="true" data-field="content" data-id="aa pagekkId">
+          <div class="editable" contenteditable="true" data-field="content" data-id="<%= pageId %>">
             <%- unescape(content)
               %></div>
           </div>
@@ -112,16 +112,20 @@
 
         document.addEventListener('DOMContentLoaded', () => {
           const editableElements = document.querySelectorAll('.editable');
-
+          const events = ['input', 'change', 'paste', 'cut', 'drop', 'blur'];
+      
           editableElements.forEach(element => {
-            const field = element.dataset.field;
-            const id = element.dataset.id;
-
-            element.addEventListener('input', () => {
-              saveContent(field, id);
-            });
+              const field = element.dataset.field;
+              const id = element.dataset.id;
+      
+              events.forEach(event => {
+                  element.addEventListener(event, () => {
+                      saveContent(field, id);
+                  });
+              });
           });
-        });
+      });
+      
 
         const deletePageButton = document.getElementById('deletepage');
 

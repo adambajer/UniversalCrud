@@ -631,6 +631,22 @@ app.post('/table/create/', (req, res) => {
       res.redirect('/');
     });
   });
+});app.post('/tables/:tableName', (req, res) => {
+  const tableName = req.params.tableName;
+  const newRecord = req.body;
+
+  // Remove id and createdat fields if they exist
+  delete newRecord.id;
+  delete newRecord.createdat;
+
+  connection.query(`INSERT INTO ${tableName} SET ?`, newRecord, (err, result) => {
+    if (err) {
+      console.error('Error creating new record:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.redirect(`/tables/${tableName}`);
+  });
 });
 
 // R tables and pages

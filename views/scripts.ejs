@@ -140,5 +140,70 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error exporting collection:', error);
       });
   });
+});document.addEventListener('DOMContentLoaded', () => {
+  const elements = document.querySelectorAll('input[type="text"], textarea, .editable');
+
+  elements.forEach(element => {
+      const groupClass = element.tagName.toLowerCase() === 'textarea' ? 'textarea-group' : 
+                         element.classList.contains('editable') ? 'editable' : 'input-group';
+      const wrapper = document.createElement('div');
+      wrapper.classList.add(groupClass);
+      element.parentNode.insertBefore(wrapper, element);
+      wrapper.appendChild(element);
+
+      const micBtnRewrite = document.createElement('button');
+      micBtnRewrite.type = 'button';
+      micBtnRewrite.classList.add('mic-btn','mic-rew');
+      micBtnRewrite.innerHTML = '<span>Rewrite</span><i class="bi bi-mic-fill"></i>';
+      wrapper.appendChild(micBtnRewrite);
+
+      const micBtnAppend = document.createElement('button');
+      micBtnAppend.type = 'button';
+      micBtnAppend.classList.add('mic-btn', 'mic-app');
+      micBtnAppend.innerHTML = '<span>Add</span><i class="bi bi-mic-fill"></i>';
+      wrapper.appendChild(micBtnAppend);
+
+      micBtnRewrite.addEventListener('click', () => startSpeechRecognition(element, 'rewrite'));
+      micBtnAppend.addEventListener('click', () => startSpeechRecognition(element, 'append'));
+  });
 });
+
+function startSpeechRecognition(element, action) {
+  if (!('webkitSpeechRecognition' in window)) {
+      alert('Your browser does not support speech recognition.');
+      return;
+  }
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = 'cs-CZ'; // Set language to Czech
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (element.classList.contains('editable')) {
+          if (action === 'append') {
+              element.textContent += transcript;
+          } else {
+              element.textContent = transcript;
+          }
+      } else {
+          if (action === 'append') {
+              element.value += transcript;
+          } else {
+              element.value = transcript;
+          }
+      }
+  };
+
+  recognition.onerror = (event) => {
+      console.error('Speech recognition error', event.error);
+  };
+
+  recognition.onend = () => {
+      console.log('Speech recognition ended');
+  };
+
+  recognition.start();
+}
 </script>

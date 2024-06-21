@@ -12,6 +12,8 @@
     z-index: 99999;
     
   }
+  .breadcrumb {margin-bottom: 0px;
+  }
  td.description {
   overflow: hidden;
   height: 30px;
@@ -182,15 +184,16 @@ tr:hover .delete-btn {
       padding-top:10px;
   }
   .expand-sign {
-    cursor: pointer; 
+    cursor: pointer;
     display: inline-block;
-     width: 20px;
-    height: 20px;
-    left: -20px;
-    background-color: #aaa;
-  text-align: center;
-  
+    width: 20px;
+    /* height: 20px; */
+    /* left: -20px; */
+    background-color: white;
+    color: #000;
+    text-align: center;
   }
+  
   .customdropmenu  {
     min-width: 300px;
   }
@@ -249,4 +252,48 @@ tr:hover .delete-btn {
         }
         .pruh {
           background: #eaeaea;
-        }
+        }.input-group {
+          position: relative;
+      }
+      
+      .editable {
+        position: relative;
+    }
+    
+    .editable {
+      position: relative;
+  }
+  
+  .input-group, .textarea-group, .editable {
+      position: relative;
+  }
+  
+  .mic-btn {
+      position: absolute;
+      left: 10px;
+      top:20px;
+      cursor: pointer;
+      display: none;
+  }
+  
+  .input-group:hover .mic-btn, .textarea-group:hover .mic-btn, .editable:hover .mic-btn {
+      display: block;
+  }
+  .mic-app {
+  
+    left: 100px;
+    color: red;
+    width: 100px;
+    padding: 0px;
+    border: 1px solid red;
+ 
+  }
+  .mic-rew {
+    left: 0px;
+    color:blue;
+    width: 100px;
+    padding: 0px;
+    border: 1px solid blue;
+  }
+  
+    

@@ -107,16 +107,16 @@
               aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+            <ul class="navbar-nav justify-content-start flex-grow-1 p-1">
 
 
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle customdrophref" href="#" role="button" data-bs-toggle=""
                   aria-expanded="false">
                   Pages
                 </a>
-                <ul class="dropdown-menu dropdown-menu-dark customdropmenu p-2">
-                  <div class="pages-container p-3"></div>
+                <ul class="dropdown-menu customdropmenu bg-white  shadow-sm">
+                  <div class="pages-container"></div>
                 </ul>
               </li>
 
@@ -125,7 +125,7 @@
                   aria-expanded="false">
                   Tables
                 </a>
-                <ul class="dropdown-menu dropdown-menu-dark">
+                <ul class="dropdown-menu ">
                   <% if (typeof crudtables==='undefined' || crudtables.length===0) { %>
 
                     <li>
@@ -181,14 +181,13 @@
 
                       const linkElement = document.createElement('a');
                       linkElement.setAttribute('href', `/pages/${page.name}`);
-                      linkElement.classList.add("text-white");
+                      linkElement.classList.add("text-black");
                       linkElement.classList.add("m-2");
                       linkElement.textContent = page.name;
 
                       const expandSign = document.createElement('span');
                       expandSign.classList.add('expand-sign');
-
-                      expandSign.classList.add('text-warning');
+ 
                       expandSign.textContent = page.children.length > 0 ? '+' : ' ';
                       expandSign.addEventListener('click', event => {
                         event.preventDefault();
