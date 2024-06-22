@@ -261,39 +261,52 @@ tr:hover .delete-btn {
     }
     
     .editable {
+      caret-color: transparent; /* Hide default caret */
       position: relative;
-  }
-  
-  .input-group, .textarea-group, .editable {
-      position: relative;
-  }
-  
-  .mic-btn {
-      position: absolute;
-      left: 10px;
-      top:20px;
-      cursor: pointer;
-      display: none;
-  }
-  
-  .input-group:hover .mic-btn, .textarea-group:hover .mic-btn, .editable:hover .mic-btn {
-      display: block;
-  }
-  .mic-app {
-  
-    left: 100px;
-    color: red;
-    width: 100px;
-    padding: 0px;
-    border: 1px solid red;
- 
-  }
-  .mic-rew {
-    left: 0px;
-    color:blue;
-    width: 100px;
-    padding: 0px;
-    border: 1px solid blue;
-  }
-  
+    }
     
+    .custom-caret {
+      position: absolute;
+      width: 2px;
+      height: 1em;
+      background-color: red; /* Change this to your desired color */
+      pointer-events: none; /* Prevent interference with text input */
+    }
+    
+  
+    .mic-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    
+    .mic-button.recording {
+      background-color: green;
+    }
+    #universalMicButton{
+      position: fixed;
+      top: 82px;
+      right: 20px;
+      padding: 10px;
+      background-color: white;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10000;
+      border: 2px solid red;
+  
+    }
+    svg#mic2 {
+ 
+        fill: red;
+        transform: rotate(45deg);
+    
+    }

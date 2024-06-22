@@ -921,8 +921,8 @@ app.post('/pages/update/:id', async (req, res) => {
     }
 
     const updateQuery = 'UPDATE content SET content = ? WHERE id = ?';
-    await connection.query(updateQuery, [content, pageId]);
-    res.redirect(`/pages/${pageId}`);
+      connection.query(updateQuery, [content, pageId]);
+ 
   } catch (error) {
     console.error('Error updating page content:', error);
     res.status(500).send('Error updating page content');

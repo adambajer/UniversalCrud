@@ -1,209 +1,271 @@
 <script>
-var addModal = document.getElementById('addModal')
-const tableInput = document.getElementById('table_name');
- 
-
-tableInput.addEventListener('keypress', function (event) {
-
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    if (tableInput !== '') {
-      addNewColumn();
-
-
+  var addModal = document.getElementById('addModal')
+  const tableInput = document.getElementById('table_name');
+   
+  
+  tableInput.addEventListener('keypress', function (event) {
+  
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (tableInput !== '') {
+        addNewColumn();
+  
+  
+      }
     }
+  });
+  
+  tableInput.addEventListener('blur', function () {
+    addNewColumn();
+  });
+  function showToast(message) {
+    const toastBody = document.querySelector('.toast-body');
+    toastBody.textContent = message;
+  
+    const toast = new bootstrap.Toast(document.querySelector('.toast'));
+    toast.show();
   }
-});
-
-tableInput.addEventListener('blur', function () {
-  addNewColumn();
-});
-function showToast(message) {
-  const toastBody = document.querySelector('.toast-body');
-  toastBody.textContent = message;
-
-  const toast = new bootstrap.Toast(document.querySelector('.toast'));
-  toast.show();
-}
-
-function validateForm() {
-  const tableName = document.getElementById('table_name').value;
-  var existingTables = document.querySelectorAll(".table-name a");
-
-  for (var i = 0; i < existingTables.length; i++) {
-    const existingTableName = existingTables[i].textContent.trim().replace(/\s+/g, ' ');
-    const inputTableName = tableName.trim().replace(/\s+/g, ' ');
-
-    if (existingTableName === inputTableName) {
-      showToast("Table already exists!");
-      return false; // Prevent form submission
+  
+  function validateForm() {
+    const tableName = document.getElementById('table_name').value;
+    var existingTables = document.querySelectorAll(".table-name a");
+  
+    for (var i = 0; i < existingTables.length; i++) {
+      const existingTableName = existingTables[i].textContent.trim().replace(/\s+/g, ' ');
+      const inputTableName = tableName.trim().replace(/\s+/g, ' ');
+  
+      if (existingTableName === inputTableName) {
+        showToast("Table already exists!");
+        return false; // Prevent form submission
+      }
     }
-  }
-
-  const columnInputs = document.querySelectorAll('.column-input');
-  if (!columnInputs || columnInputs.length === 0) {
-    showToast("Please add at least one column.");
-    return false;
-  }
-
-  for (let i = 0; i < columnInputs.length; i++) {
-    const columnNameInput = columnInputs[i].querySelector('input[name="column_name[]"]');
-    if (!columnNameInput || columnNameInput.value === "") {
-      showToast("Please enter a column name for all columns.");
+  
+    const columnInputs = document.querySelectorAll('.column-input');
+    if (!columnInputs || columnInputs.length === 0) {
+      showToast("Please add at least one column.");
       return false;
     }
-  }
-
-
-  showToast("You created the new table " + tableName);
   
-  return ;
-}
-
-
-function addNewColumn() {
-  const tableName = tableInput.value;
-  if (tableName === "") {
-    showToast("Please enter the table name first.");
-    return;
+    for (let i = 0; i < columnInputs.length; i++) {
+      const columnNameInput = columnInputs[i].querySelector('input[name="column_name[]"]');
+      if (!columnNameInput || columnNameInput.value === "") {
+        showToast("Please enter a column name for all columns.");
+        return false;
+      }
+    }
+  
+  
+    showToast("You created the new table " + tableName);
+    
+    return ;
   }
-
-  const columnsContainer = document.getElementById('columns-container');
-
-  const columnInputs = columnsContainer.querySelectorAll('.column-input');
-  const lastColumnInput = columnInputs[columnInputs.length - 1];
-
-  if (lastColumnInput) {
-    const columnNameInput = lastColumnInput.querySelector('input[name="column_name[]"]');
-    if (columnNameInput.value === "") {
-      showToast("Please fill in the previous column name before adding a new column.");
+  
+  
+  function addNewColumn() {
+    const tableName = tableInput.value;
+    if (tableName === "") {
+      showToast("Please enter the table name first.");
       return;
     }
-  }
-
-  const columnInput = document.createElement('div');
-  columnInput.classList.add('column-input');
-  columnInput.innerHTML = `
-  <div class="input-group mb-3">
-   
-  <input type="text" class="xel form-control border-primary-subtle rounded-1 me-3" name="column_name[]" placeholder="Column Name">
-    <select class="column_type form-select border-primary-subtle rounded-1 me-3" name="data_type[]" onchange="showLengthInput(this)">
-      <option value="INT" title="Integer">INT</option>
-      <option value="VARCHAR" title="String">VARCHAR</option>
-      <option value="DATE" title="Date">DATE</option>
-    </select>
-    <input type="text" name="data_length[]" placeholder="Length" class="form-control border-primary" style="display: none;">
-    <button type="button" class="btn btn-outline-danger rounded-1" onclick="removeColumnInput(this)">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
-        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
-      </svg>
-       Remove</button>
-  </div>
-  `;
-
-
-  columnsContainer.appendChild(columnInput);
-  columnInput.querySelector("input.xel").focus();
-}
-
-function removeColumnInput(button) {
-  const columnInput = button.parentNode;
-  columnInput.parentNode.removeChild(columnInput);
-}
-
-function showLengthInput(select) {
-  const input = select.nextElementSibling;
-  if (select.value === "INT" || select.value === "VARCHAR") {
-    input.style.display = "inline-block";
-  } else {
-    input.style.display = "none";
-  }
-}
-document.addEventListener('DOMContentLoaded', () => {
-  // Get the export link element
-  const exportLink = document.getElementById('export-link');
-
-  // Add click event listener to the export link
-  exportLink.addEventListener('click', () => {
-    // Perform an AJAX request to trigger the export endpoint
-    fetch('/export')
-      .then((response) => response.blob())
-      .then((blob) => {
-        // Create a temporary link element to download the file
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'endpoints.json';
-        link.click();
-      })
-      .catch((error) => {
-        console.error('Error exporting collection:', error);
-      });
-  });
-});
-document.addEventListener('DOMContentLoaded', () => {
-  var elements = document.querySelectorAll('input, textarea, div.editable');
-
-  elements.forEach(element => {
   
-      var wrapper = document.createElement('div');
-      wrapper.classList.add('group');
-      element.parentNode.insertBefore(wrapper, element);
-      wrapper.appendChild(element);
-
-      var micBtnRewrite = document.createElement('button');
-      micBtnRewrite.type = 'button';
-      micBtnRewrite.classList.add('mic-btn','mic-rew');
-      micBtnRewrite.innerHTML = '<span>Rewrite</span><i class="bi bi-mic-fill"></i>';
-      wrapper.appendChild(micBtnRewrite);
-
-      var micBtnAppend = document.createElement('button');
-      micBtnAppend.type = 'button';
-      micBtnAppend.classList.add('mic-btn', 'mic-app');
-      micBtnAppend.innerHTML = '<span>Add</span><i class="bi bi-mic-fill"></i>';
-      wrapper.appendChild(micBtnAppend);
-
-      micBtnRewrite.addEventListener('click', () => startSpeechRecognition(element, 'rewrite'));
-      micBtnAppend.addEventListener('click', () => startSpeechRecognition(element, 'append'));
-  });
-});
-
-function startSpeechRecognition(element, action) {
-  if (!('webkitSpeechRecognition' in window)) {
-      alert('Your browser does not support speech recognition.');
-      return;
-  }
-
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'cs-CZ'; // Set language to Czech
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      if (element.classList.contains('editable')) {
-          if (action === 'append') {
-              element.textContent += transcript;
-          } else {
-              element.textContent = transcript;
-          }
-      } else {
-          if (action === 'append') {
-              element.value += transcript;
-          } else {
-              element.value = transcript;
-          }
+    const columnsContainer = document.getElementById('columns-container');
+  
+    const columnInputs = columnsContainer.querySelectorAll('.column-input');
+    const lastColumnInput = columnInputs[columnInputs.length - 1];
+  
+    if (lastColumnInput) {
+      const columnNameInput = lastColumnInput.querySelector('input[name="column_name[]"]');
+      if (columnNameInput.value === "") {
+        showToast("Please fill in the previous column name before adding a new column.");
+        return;
       }
-  };
+    }
+  
+    const columnInput = document.createElement('div');
+    columnInput.classList.add('column-input');
+    columnInput.innerHTML = `
+    <div class="input-group mb-3">
+     
+    <input type="text" class="xel form-control border-primary-subtle rounded-1 me-3" name="column_name[]" placeholder="Column Name">
+      <select class="column_type form-select border-primary-subtle rounded-1 me-3" name="data_type[]" onchange="showLengthInput(this)">
+        <option value="INT" title="Integer">INT</option>
+        <option value="VARCHAR" title="String">VARCHAR</option>
+        <option value="DATE" title="Date">DATE</option>
+      </select>
+      <input type="text" name="data_length[]" placeholder="Length" class="form-control border-primary" style="display: none;">
+      <button type="button" class="btn btn-outline-danger rounded-1" onclick="removeColumnInput(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+        </svg>
+         Remove</button>
+    </div>
+    `;
+  
+  
+    columnsContainer.appendChild(columnInput);
+    columnInput.querySelector("input.xel").focus();
+  }
+  
+  function removeColumnInput(button) {
+    const columnInput = button.parentNode;
+    columnInput.parentNode.removeChild(columnInput);
+  }
+  
+  function showLengthInput(select) {
+    const input = select.nextElementSibling;
+    if (select.value === "INT" || select.value === "VARCHAR") {
+      input.style.display = "inline-block";
+    } else {
+      input.style.display = "none";
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get the export link element
+    const exportLink = document.getElementById('export-link');
+  
+    // Add click event listener to the export link
+    exportLink.addEventListener('click', () => {
+      // Perform an AJAX request to trigger the export endpoint
+      fetch('/export')
+        .then((response) => response.blob())
+        .then((blob) => {
+          // Create a temporary link element to download the file
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = 'endpoints.json';
+          link.click();
+        })
+        .catch((error) => {
+          console.error('Error exporting collection:', error);
+        });
+    });
+  }); 
+  document.addEventListener('DOMContentLoaded', () => {
+    currentFocusedElement = null;
 
-  recognition.onerror = (event) => {
-      console.error('Speech recognition error', event.error);
-  };
+    document.querySelectorAll('.editable').forEach(el => {
+      const field = el.dataset.field;
+      const id = el.dataset.id;
 
-  recognition.onend = () => {
-      console.log('Speech recognition ended');
-  };
+      // Create a MutationObserver to watch for changes to the content
+      const observer = new MutationObserver(() => {
+        saveContent(field, id);
+      });
 
-  recognition.start();
-}
-</script>
+      // Configure the observer to watch for changes to the subtree and character data
+      observer.observe(el, {
+        subtree: true,
+        characterData: true,
+        childList: true
+      });
+
+      el.addEventListener('input', () => {
+        saveContent(field, id);
+      });
+    });
+
+    function saveContent(field, id) {
+      const updatedValue = document.querySelector(`div[data-id="${id}"]`).innerHTML;
+      fetch(`/pages/update/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ [field]: updatedValue })
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Content successfully saved');
+          } else {
+            console.error('Error saving content');
+          }
+        })
+        .catch(error => {
+          console.error('Error saving content:', error);
+        });
+    }
+  });
+
+  // Mic button functionality
+
+  (function() {
+    'use strict';
+
+    // Check if the SpeechRecognition API is available
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        console.error('SpeechRecognition API is not supported in this browser.');
+        return;
+    }
+
+    // Create and style the mic button
+    const micButton = document.createElement('button');
+    micButton.id = 'universalMicButton';
+ 
+    document.body.appendChild(micButton);
+    micButton.innerHTML = '<svg id="mic2" width="15" height="20"  viewBox="0 0 91.539 237.393" xmlns="http://www.w3.org/2000/svg"><g paint-order="markers fill stroke"><path d="M24.412 113.13l7.332 124.263h28.051l7.332-124.264c-6.94 2.054-14.13 4.687-21.358 4.691-7.227-.005-14.418-2.637-21.357-4.69z"/><path d="M45.77 0A45.77 56.691 0 000 56.691a45.77 56.691 0 00.686 9.326 97.17 52.464 0 0045.083 6.096 97.17 52.464 0 0045.066-5.999 45.77 56.691 0 00.704-9.423A45.77 56.691 0 0045.77 0zM1.552 70.951a45.77 56.691 0 0044.216 42.432A45.77 56.691 0 0089.967 71.06a105 56.691 0 01-44.198 5.28 105 56.691 0 01-44.216-5.39z"/></g></svg>';
+
+    // Speech recognition setup
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'cs-CZ'; // Set language to Czech
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    let isListening = false;
+    let currentFocusedElement = null;
+
+    // Track mouse movement to update mic button position
+    document.addEventListener('mousemove', (event) => {
+        micButton.style.top = `${event.clientY}px`;
+    });
+
+    // Handle middle mouse button down and up events
+    document.addEventListener('mousedown', (event) => {
+        if (event.button === 1 && !isListening) { // Middle mouse button (button 1)
+            recognition.start();
+            micButton.classList.add('active');
+            isListening = true;
+        }
+    });
+
+    document.addEventListener('mouseup', (event) => {
+        if (event.button === 1 && isListening) { // Middle mouse button (button 1)
+            recognition.stop();
+            micButton.classList.remove('active');
+            isListening = false;
+        }
+    });
+
+    // Handle speech recognition results
+    recognition.addEventListener('result', (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                transcript += event.results[i][0].transcript;
+            }
+        }
+
+        if (currentFocusedElement) {
+            if (currentFocusedElement.isContentEditable) {
+                currentFocusedElement.innerHTML += transcript;
+            } else if (currentFocusedElement.tagName === 'TEXTAREA' || currentFocusedElement.tagName === 'INPUT') {
+                currentFocusedElement.value += transcript;
+            }
+        }
+    });
+
+    // Monitor focus on editable elements
+    document.addEventListener('focus', (event) => {
+        if (event.target.isContentEditable || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'INPUT') {
+            currentFocusedElement = event.target;
+        }
+    }, true);
+
+    document.addEventListener('blur', () => {
+        currentFocusedElement = null;
+    }, true);
+
+  })();
+  
+  </script>
