@@ -1,0 +1,325 @@
+<% const colorSettings={ primary: { value: '' , rgb: '' , subtle: '' }, secondary: { value: '' , rgb: '' , subtle: '' },
+  warning: { value: '' , rgb: '' , subtle: '' }, danger: { value: '' , rgb: '' , subtle: '' }, success: { value: '' ,
+  rgb: '' , subtle: '' }, navbarbg: { value: '' , rgb: '' , subtle: '' }, }; %>
+
+  <% settings.forEach((setting)=> {
+    const settingName = setting.param.toLowerCase();
+    if (colorSettings.hasOwnProperty(settingName)) {
+    const colorValue = setting.value;
+    colorSettings[settingName].value = colorValue;
+
+    if (colorValue.startsWith('#')) {
+    const rgbArray = colorConvert.hex.rgb(colorValue);
+    const rgbValue = rgbArray.join(',');
+    colorSettings[settingName].rgb = rgbValue;
+
+    // Define a function to generate subtle variants of colors
+    function generateSubtleColorVariants(color) {
+    const baseColor = tinycolor(color);
+    const subtleColor = baseColor.lighten(60).toHexString();
+
+    return subtleColor;
+    }
+
+    const subtleVariant = generateSubtleColorVariants(colorValue);
+    colorSettings[settingName].subtle = subtleVariant;
+    }
+    }
+    }); %>
+
+    <style>
+      a.primary {
+        color: <%=colorSettings.primary.value %> !important;
+      }
+
+      .btn-primary {
+        background: <%=colorSettings.primary.value %> !important;
+        border: <%=colorSettings.primary.value %> !important;
+      }
+
+      .btn-secondary {
+        background: <%=colorSettings.secondary.value %> !important;
+        border: <%=colorSettings.secondary.value %> !important;
+      }
+
+      .btn-success {
+        background: <%=colorSettings.success.value %> !important;
+        border: <%=colorSettings.success.value %> !important;
+      }
+
+      .btn-warning {
+        background: <%=colorSettings.warning.value %> !important;
+        border: <%=colorSettings.warning.value %> !important;
+      }
+
+      .btn-danger {
+        background: <%=colorSettings.danger.value %> !important;
+        border: <%=colorSettings.danger.value %> !important;
+      }
+
+      :root {
+        --bs-dark-rgb: <%=colorSettings.navbarbg.rgb %> !important;
+        --bs-primary: <%=colorSettings.primary.value %> !important;
+        --bs-primary-bg-subtle: <%=colorSettings.primary.subtle %> !important;
+        --bs-primary-bg: <%=colorSettings.primary.value %> !important;
+        --bs-primary-rgb: <%=colorSettings.primary.rgb %> !important;
+        --bs-secondary: <%=colorSettings.secondary.value %> !important;
+
+        --bs-secondary-bg: <%=colorSettings.secondary.value %> !important;
+
+        --bs-secondary-rgb: <%=colorSettings.secondary.rgb %> !important;
+        --bs-secondary-bg-subtle: <%=colorSettings.secondary.subtle %> !important;
+        --bs-success: <%=colorSettings.success.value %> !important;
+        --bs-success-bg: <%=colorSettings.success.value %> !important;
+
+        --bs-success-bg-subtle: <%=colorSettings.success.subtle %> !important;
+        --bs-success-rgb: <%=colorSettings.success.rgb %> !important;
+        --bs-info: #0dcaf0;
+        --bs-warning: <%=colorSettings.warning.value %> !important;
+        --bs-warning-bg: <%=colorSettings.warning.value %> !important;
+        --bs-warning-bg-subtle: <%=colorSettings.warning.subtle %> !important;
+        --bs-warning-rgb: <%=colorSettings.warning.rgb %> !important;
+        --bs-danger: <%=colorSettings.danger.value %> !important;
+        --bs-danger-bg: <%=colorSettings.danger.value %> !important;
+        --bs-danger-bg-subtle: <%=colorSettings.danger.subtle %> !important;
+        --bs-danger-rgb: <%=colorSettings.danger.rgb %> !important;
+        --bs-light: #f8f9fa;
+        --bs-dark: #212529;
+      }
+    </style>
+
+    <!-- Rest of your HTML/EJS code goes here -->
+
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-bottom-dark" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"> <i class="bi bi-house-fill text-warning"></i>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+          aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar"
+          aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-start flex-grow-1 p-1">
+
+
+              <li class="nav-item dropdown ">
+                <a class="nav-link dropdown-toggle customdrophref" href="#" role="button" data-bs-toggle=""
+                  aria-expanded="false">
+                  Pages
+                </a>
+                <ul class="dropdown-menu customdropmenu bg-white  shadow-sm">
+                  <div class="pages-container"></div>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Tables
+                </a>
+                <ul class="dropdown-menu ">
+                  <% if (typeof crudtables==='undefined' || crudtables.length===0) { %>
+
+                    <li>
+                      <a href="" class="dropdown-item">There are no tables</a>
+                    </li>
+                    <li>
+                      <a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addTable">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        Table
+                      </a>
+                    </li>
+                    <% } else { %>
+                      <% if (crudtables.length> 0) { %>
+                        <% crudtables.forEach((table)=> { %>
+                          <li>
+                            <a href="/tables/<%= table.name %>" class="dropdown-item">
+                              <%= table.name %>
+                            </a>
+                          </li>
+                          <% }); %>
+                            <% } else { %>
+
+
+                              <% } %>
+
+                                <% } %>
+                </ul>
+
+              </li>
+
+
+            </ul>
+
+            <script>
+              let customdrop = document.querySelector(".customdrophref");
+              let customdropmenu = document.querySelector(".customdropmenu");
+
+              customdrop.addEventListener('click', event => {
+                customdropmenu.classList.toggle('show')
+
+              })
+              fetch('/api/pages')
+                .then(response => response.json())
+                .then(pages => {
+                  const pagesContainer = document.querySelector('.pages-container');
+
+                  // Function to recursively render the pages
+                  function renderPages(pages, container) {
+                    pages.forEach(page => {
+                      const pageElement = document.createElement('div');
+                      pageElement.classList.add('page');
+                      pageElement.classList.add('position-relative');
+
+                      const linkElement = document.createElement('a');
+                      linkElement.setAttribute('href', `/pages/${page.name}`);
+                      linkElement.classList.add("text-black");
+                      linkElement.classList.add("m-2");
+                      linkElement.textContent = page.name;
+
+                      const expandSign = document.createElement('span');
+                      expandSign.classList.add('expand-sign');
+ 
+                      expandSign.textContent = page.children.length > 0 ? '+' : ' ';
+                      expandSign.addEventListener('click', event => {
+                        event.preventDefault();
+                        pageElement.querySelector('.children').classList.toggle('expanded');
+                        expandSign.textContent = expandSign.textContent === '+' ? '-' : '+';
+                      });
+
+                      pageElement.appendChild(expandSign);
+                      pageElement.appendChild(linkElement);
+
+                      if (page.children.length > 0) {
+                        const childrenElement = document.createElement('div');
+                        childrenElement.classList.add('children');
+                        pageElement.appendChild(childrenElement);
+
+                        renderPages(page.children, childrenElement);
+                      }
+
+                      container.appendChild(pageElement);
+                    });
+                  }
+
+                  renderPages(pages, pagesContainer);
+                })
+                .catch(error => {
+                  console.error('Error fetching pages:', error);
+                });
+            </script>
+            <div class="navbar-nav justify-content-start flex-grow-1 pe-3">
+              <% let siteNameValue='' ; %> <!-- Variable to store the value of "sitename" setting -->
+                <% settings.forEach((setting)=> { %>
+                  <% if (setting.param==='sitename' ) { %>
+                    <% siteNameValue=setting.value; %>
+                      <% } %>
+                        <% }); %>
+
+                          <h3>
+                            <%= siteNameValue %>
+                          </h3>
+
+            </div>
+            <ul class="ms-auto navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link text-secondary" href="" id="toggleButton2" title="New page" data-bs-toggle="modal"
+                  data-bs-target="#addPage"> <i class="bi bi-file-earmark-plus-fill"></i></a>
+              </li>
+              <li class="nav-item  ms-2">
+                <a class="nav-link text-secondary" href="" id="toggleButton2" title="New  table" data-bs-toggle="modal"
+                  data-bs-target="#addTable"><i class="bi bi-database-fill-add"></i></a>
+              </li>
+              <li class="nav-item text-secondary">
+                <a class="nav-link" href="#" id="export-link"><i class="bi bi-save"></i></a>
+              </li>
+           
+              <li class="nav-item ms-3">
+                <a class="nav-link text-secondary" href="/settings"><i class="bi bi-wrench-adjustable"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="modal fade " id="addTable" tabindex="-1" aria-labelledby="addTableLabel" aria-hidden="true">
+      <div class="modal-dialog shadow">
+        <div class="modal-content bg-transparent bg-opacity-50">
+          <div class="modal-header bg-primary">
+            <p class="text-white m-0">New table
+            </p>
+            <button type="button" class="btn-close shadow bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="/table/create/" onsubmit="return validateForm()">
+
+              <input type="text" class="form-control border-primary-subtle mb-3" placeholder="Enter new table name"
+                name="table_name" id="table_name" class="">
+
+              <input type="text" class="form-control border-primary-subtle mt-3 mb-3"
+                placeholder="Enter table description" name="table_description" id="table_description">
+
+              <div id="columns-container" class="">
+                <!-- Column inputs will be dynamically added here -->
+              </div>
+              <div class="d-flex justify-content-between  ">
+                <button type="button" class="btn btn-primary text-white rounded-1" onclick="addNewColumn()"
+                  aria-label="AddColumn">
+                  Add column</button>
+                <button type="submit" class="ms-3 btn btn-primary text-white">Add</button>
+
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="addPage" tabindex="-1" aria-labelledby="addPageleLabel" aria-hidden="true">
+      <div class="modal-dialog shadow">
+        <div class="modal-content bg-transparent bg-opacity-50">
+          <div class="modal-header bg-success">
+            <p class="text-success text-white m-0">New page</p>
+            <button type="button" class="btn-close shadow bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="/create/page">
+
+              <input type="text" class="form-control border-success-subtle mb-3" placeholder="Enter new page name"
+                name="name" id="name">
+              <textarea name="content" id="content" class="form-control mb-3 border-success-subtle" rows="20"
+                placeholder="Enter page text"></textarea>
+              <select name="parentid" id="parentid" class="form-control mb-3 border-success-subtle">
+                <% if (typeof pages==='undefined' || pages.length===0) { %>
+
+                  <% } else { %>
+                    <option value="">Select parent page</option>
+                    <% pages.forEach(page=> { %>
+
+                      <option value="<%= page.id %>">
+                        <%= page.name %>
+                      </option>
+                      <% }); %>
+                      <% } %>
+              </select>
+      
+
+                <div class="d-flex justify-content-between">
+                  
+                  <button type="submit" class="ms-3 btn btn-success text-white">Add</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('scripts.ejs') %>

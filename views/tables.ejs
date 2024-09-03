@@ -1,41 +1,35 @@
 <%- include('header.ejs') %>
-    <%- include('navbar.ejs') %> 
-        <div class="row bg-primary-subtle align-items-center pruh ps-3 border-bottom border-bottom border-primary " >
+    <%- include('navbar.ejs') %>
+        <div class="row bg-white align-items-center ps-3 ">
 
             <div class="col-md-4">
 
                 <!-- Breadcrumb trail -->
- 
-<nav class="d-block align-middle" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
 
-            <a class="d-inline-block link-dark" href="/" title="Homepage" alt="Homepage">
-                <i class="bi bi-house-fill"></i>
-              </a>
-        </li>
-        <li class="breadcrumb-item">Tables</li>
+                <nav class="d-block align-middle" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                     
+                        <li class="breadcrumb-item">Tables</li>
 
-      <li class="breadcrumb-item active"><%= tableName %></li>
-    </ol>
-  </nav>
+                        <li class="breadcrumb-item active">
+                            <%= tableName %>
+                        </li>
+                    </ol>
+                </nav>
             </div>
             <div class="col-md-4">
-                <span class="me-2 badge bg-primary">Table</span>
-                <span class="text-primary">
+                <span class="me-2 badge bg-dark">Table</span>
+                <span class="text-dark">
                     <%= tableName %>
                 </span>
-                
-               
+
+
             </div>
             <div class="col-md-4 text-end">
-                <a href=""
-                class="text-primary p-2 d-inline-block"
-                 data-bs-toggle="collapse"
-                 data-bs-target="#collapseExample"  aria-expanded="true" aria-controls="collapseExample"><i class="bi bi-info-circle-fill "></i></a>
-                <a href=""
-                class=" bg-primary text-white p-2 d-inline-block"
-                 data-bs-toggle="modal"
+                <a href="" class="text-dark p-2 d-inline-block" data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample"><i
+                        class="bi bi-info-circle-fill "></i></a>
+                <a href="" class=" bg-dark text-white p-2 d-inline-block" data-bs-toggle="modal"
                     data-bs-target="#newrecord">
                     New record </a>
             </div>
@@ -48,11 +42,10 @@
             <div class="position-relative">
                 <% crudtable.forEach((tableName)=> { %>
 
-                    <div class="row   border-bottom  collapse" id="collapseExample">
+                    <div class="row   border-top  collapse" id="collapseExample">
                         <div class="col-md-10 border-end">
 
-                            <div class="d-block ps-3 ">
-                                <h4 class="text-primary">Description:</h4>
+                            <div class="d-block ps-3 "> 
                                 <% if (tableName.description) { %>
                                     <%= tableName.description %>
                                         <% } else { %>
@@ -61,14 +54,11 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="d-block  position-relative">
-                                <h4 class="text-primary">Info:</h4>
+                            <div class="d-block  position-relative"> 
                                 <p class="d-block mr-2">
                                     <%= tableName.createdat.toLocaleDateString('cs-CZ', { day: 'numeric' ,
                                         month: 'numeric' , year: 'numeric' }) %>
-                                </p>
-                                <p class="d-block mr-2">By: <%= tableName.createdby %>
-                                </p>
+                                </p> 
 
                             </div>
                         </div>
@@ -78,12 +68,14 @@
             </div>
             <div class="modal fade" id="newrecord" tabindex="-1" aria-labelledby="newrecodLabel" aria-hidden="true">
                 <div class="modal-dialog  ">
-                     
-                        <div class="modal-content bg-transparent bg-opacity-50">
-                            <div class="modal-header bg-primary">
-                              <p class="text-primary text-white m-0">New record in <%= tableName %></p>
-                              <button type="button" class="btn-close shadow bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
+
+                    <div class="modal-content bg-transparent bg-opacity-50">
+                        <div class="modal-header bg-dark">
+                            <p class="text-dark text-white m-0">New record in <%= tableName %>
+                            </p>
+                            <button type="button" class="btn-close shadow bg-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
                         <div class="modal-body">
                             <form method="POST" class="" action="/tables/<%= tableName %>"
                                 onsubmit="return validateFormRecord()">
@@ -91,26 +83,26 @@
                                     <% for (let i=0; i < columns.length; i++) { %>
                                         <% if (columns[i].name !=='id' ) { %>
                                             <div class="m-2 form-group d-flex">
-                                                <label class="pb-1 text-primary" for="<%= columns[i].name %>">
+                                                <label class="pb-1 text-dark" for="<%= columns[i].name %>">
                                                     <%= columns[i].name %><small>
                                                             <%= columns[i].type %>
                                                         </small>
                                                 </label>
-                                                
+
                                                 <% if (columns[i].type.startsWith('int')) { %>
-                                                    <input type="number" class="form-control border-primary-subtle"
+                                                    <input type="number" class="form-control border-dark-subtle"
                                                         id="<%= columns[i].name %>" name="<%= columns[i].name %>"
                                                         placeholder="Enter <%= columns[i].name %>"
                                                         data-column-type="<%= columns[i].type %>">
                                                     <% } else { %>
-                                                        <input type="text" class="form-control border-primary-subtle"
+                                                        <input type="text" class="form-control border-dark-subtle"
                                                             id="<%= columns[i].name %>" name="<%= columns[i].name %>"
                                                             placeholder="Enter <%= columns[i].name %>"
                                                             data-column-type="<%= columns[i].type %>">
                                                         <% } %>
                                             </div>
                                             <% } else { %>
-                                                <input type="hidden" class="form-control border-primary-subtle"
+                                                <input type="hidden" class="form-control border-dark-subtle"
                                                     id="<%= columns[i].name %>" name="<%= columns[i].name %>"
                                                     placeholder="Enter <%= columns[i].name %>"
                                                     data-column-type="<%= columns[i].type %>">
@@ -118,9 +110,9 @@
                                                     <% } %>
                                 </div>
                                 <div class="d-flex flex-row-reverse">
-                                    <button type="submit" class="ms-3 btn btn-primary text-white">Add</button>
+                                    <button type="submit" class="ms-3 btn btn-dark text-white">Add</button>
 
-                                   
+
                                 </div>
                             </form>
                         </div>
@@ -135,13 +127,13 @@
                 <thead>
                     <tr class="border-top">
                         <% for (let i=0; i < columns.length; i++) { %>
-                            <th class="bg-white  text-primary">
+                            <th class="bg-white  text-dark">
                                 <%= columns[i].name %> <small>
                                         <%= columns[i].type %>
                                     </small>
                             </th>
                             <% } %>
-                                <th class="bg-white text-primary">Actions</th>
+                                <th class="bg-white text-dark">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -172,7 +164,7 @@
                                                     d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z" />
                                             </svg>
                                             Save</button>
-                                        <!--<button type="button" class="btn btn-sm btn-primary edit-btn">Edit</button>-->
+                                        <!--<button type="button" class="btn btn-sm btn-dark edit-btn">Edit</button>-->
                                         <button type="button" class="btn btn-outline-primrary delete-btn"
                                             onclick="return confirm('Are you sure you want to delete this record?')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -193,7 +185,7 @@
                 </tbody>
             </table>
             <% if (records.length==0) { %>
-                <h5 class="text-primary">This table is empty.</h5>
+                <h5 class="text-dark">This table is empty.</h5>
                 <% } %>
         </div>
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Tester</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>API Tester</h1>
+    <div id="routesContainer"></div>
+    <div id="responseContainer">
+        <h2>Response</h2>
+        <pre id="response"></pre>
+    </div>
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    
+    .api-form {
+        background-color: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    textarea, button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    
+    button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    pre {
+        background-color: #eaeaea;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+    
+    #responseContainer {
+        background-color: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+</style>
+    <script src="collection.json" type="application/json"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const routes = JSON.parse(document.querySelector('script[type="application/json"]').textContent);
+            const routesContainer = document.getElementById('routesContainer');
+        
+            routes.forEach(route => {
+                const form = document.createElement('form');
+                form.classList.add('api-form');
+                form.dataset.method = route.method;
+                form.dataset.path = route.path;
+        
+                form.innerHTML = `
+                    <h3>${route.method} /api/${route.path}</h3>
+                    <textarea placeholder="Request Body (JSON)" style="display:${route.method === 'GET' || route.method === 'DELETE' ? 'none' : 'block'}"></textarea>
+                    <button type="submit">Send</button>
+                `;
+        
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const method = e.currentTarget.dataset.method;
+                    const path = e.currentTarget.dataset.path;
+                    const body = e.currentTarget.querySelector('textarea').value;
+        
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/${path}`, {
+                            method,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: method === 'GET' || method === 'DELETE' ? null : body
+                        });
+                        const responseData = await response.json();
+                        document.getElementById('response').textContent = JSON.stringify(responseData, null, 2);
+                    } catch (error) {
+                        document.getElementById('response').textContent = 'Error: ' + error.message;
+                    }
+                });
+        
+                routesContainer.appendChild(form);
+            });
+        });
+        
+    </script>
+</body>
+</html>

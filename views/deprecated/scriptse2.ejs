@@ -1,48 +1,51 @@
 <script>
   var addModal = document.getElementById('addModal')
   const tableInput = document.getElementById('table_name');
-
+   
+  
   tableInput.addEventListener('keypress', function (event) {
+  
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (tableInput.value !== '') {
+      if (tableInput !== '') {
         addNewColumn();
+  
+  
       }
     }
   });
-
+  
   tableInput.addEventListener('blur', function () {
     addNewColumn();
   });
-
   function showToast(message) {
     const toastBody = document.querySelector('.toast-body');
     toastBody.textContent = message;
-
+  
     const toast = new bootstrap.Toast(document.querySelector('.toast'));
     toast.show();
   }
-
+  
   function validateForm() {
     const tableName = document.getElementById('table_name').value;
     var existingTables = document.querySelectorAll(".table-name a");
-
+  
     for (var i = 0; i < existingTables.length; i++) {
       const existingTableName = existingTables[i].textContent.trim().replace(/\s+/g, ' ');
       const inputTableName = tableName.trim().replace(/\s+/g, ' ');
-
+  
       if (existingTableName === inputTableName) {
         showToast("Table already exists!");
         return false; // Prevent form submission
       }
     }
-
+  
     const columnInputs = document.querySelectorAll('.column-input');
     if (!columnInputs || columnInputs.length === 0) {
       showToast("Please add at least one column.");
       return false;
     }
-
+  
     for (let i = 0; i < columnInputs.length; i++) {
       const columnNameInput = columnInputs[i].querySelector('input[name="column_name[]"]');
       if (!columnNameInput || columnNameInput.value === "") {
@@ -50,23 +53,26 @@
         return false;
       }
     }
-
+  
+  
     showToast("You created the new table " + tableName);
-    return;
+    
+    return ;
   }
-
+  
+  
   function addNewColumn() {
     const tableName = tableInput.value;
     if (tableName === "") {
       showToast("Please enter the table name first.");
       return;
     }
-
+  
     const columnsContainer = document.getElementById('columns-container');
-
+  
     const columnInputs = columnsContainer.querySelectorAll('.column-input');
     const lastColumnInput = columnInputs[columnInputs.length - 1];
-
+  
     if (lastColumnInput) {
       const columnNameInput = lastColumnInput.querySelector('input[name="column_name[]"]');
       if (columnNameInput.value === "") {
@@ -74,37 +80,38 @@
         return;
       }
     }
-
+  
     const columnInput = document.createElement('div');
     columnInput.classList.add('column-input');
     columnInput.innerHTML = `
-      <div class="input-group mb-3">
-        <input type="text" class="xel form-control border-primary-subtle rounded-1 me-3" name="column_name[]" placeholder="Column Name">
-        <select class="column_type form-select border-primary-subtle rounded-1 me-3" name="data_type[]" onchange="showLengthInput(this)">
-          <option value="INT" title="Integer">INT</option>
-          <option value="VARCHAR" title="String">VARCHAR</option>
-          <option value="DATE" title="Date">DATE</option>
-        </select>
-        <input type="text" name="data_length[]" placeholder="Length" class="form-control border-primary" style="display: none;">
-        <button type="button" class="btn btn-outline-danger rounded-1" onclick="removeColumnInput(this)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
-            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
-          </svg>
-          Remove
-        </button>
-      </div>
+    <div class="input-group mb-3">
+     
+    <input type="text" class="xel form-control border-primary-subtle rounded-1 me-3" name="column_name[]" placeholder="Column Name">
+      <select class="column_type form-select border-primary-subtle rounded-1 me-3" name="data_type[]" onchange="showLengthInput(this)">
+        <option value="INT" title="Integer">INT</option>
+        <option value="VARCHAR" title="String">VARCHAR</option>
+        <option value="DATE" title="Date">DATE</option>
+      </select>
+      <input type="text" name="data_length[]" placeholder="Length" class="form-control border-primary" style="display: none;">
+      <button type="button" class="btn btn-outline-danger rounded-1" onclick="removeColumnInput(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+        </svg>
+         Remove</button>
+    </div>
     `;
-
+  
+  
     columnsContainer.appendChild(columnInput);
     columnInput.querySelector("input.xel").focus();
   }
-
+  
   function removeColumnInput(button) {
     const columnInput = button.parentNode;
     columnInput.parentNode.removeChild(columnInput);
   }
-
+  
   function showLengthInput(select) {
     const input = select.nextElementSibling;
     if (select.value === "INT" || select.value === "VARCHAR") {
@@ -113,14 +120,17 @@
       input.style.display = "none";
     }
   }
-
   document.addEventListener('DOMContentLoaded', () => {
+    // Get the export link element
     const exportLink = document.getElementById('export-link');
-
+  
+    // Add click event listener to the export link
     exportLink.addEventListener('click', () => {
+      // Perform an AJAX request to trigger the export endpoint
       fetch('/export')
         .then((response) => response.blob())
         .then((blob) => {
+          // Create a temporary link element to download the file
           const link = document.createElement('a');
           link.href = window.URL.createObjectURL(blob);
           link.download = 'endpoints.json';
@@ -130,8 +140,8 @@
           console.error('Error exporting collection:', error);
         });
     });
-  });
-
+  }); 
+  
   document.addEventListener('DOMContentLoaded', () => {
     currentFocusedElement = null;
 
@@ -194,51 +204,50 @@
       });
     });
   });
+  // Mic button functionality
 
   (function() {
     'use strict';
 
+    // Check if the SpeechRecognition API is available
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      console.error('SpeechRecognition API is not supported in this browser.');
-      return;
+        console.error('SpeechRecognition API is not supported in this browser.');
+        return;
     }
 
+    // Create and style the mic button
     const micButton = document.createElement('button');
     micButton.id = 'universalMicButton';
-    micButton.innerHTML = '<svg id="mic2" width="10mm" height="21mm" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g transform="translate(0 4.174)"><path d="M46.195 87.43c-6.23 0-11.28 4.842-11.28 10.815 0 31.98 24.795 58.497 57.064 64.213v26.812h.047a13.02 12.747 0 00-.046.622A13.02 12.747 0 00105 202.64a13.02 12.747 0 0013.02-12.747 13.02 12.747 0 00-.016-.622h.016v-26.812c32.27-5.716 57.066-32.232 57.065-64.213 0-5.973-5.05-10.815-11.28-10.815-6.23 0-11.28 4.842-11.28 10.815 0 24.09-20.947 43.741-47.525 43.741s-47.525-19.65-47.525-43.741c0-5.973-5.05-10.815-11.28-10.815z" color="#000" fill="none" stroke-width="3.00030552" stroke-linecap="square" paint-order="stroke markers fill" stroke="#000"/><ellipse cx="92.736" cy="205.75" rx=".757" ry=".076" paint-order="markers fill stroke"/></g><path d="M105 0C87.513 0 72.645 10.775 66.616 26.07h52.208c2.77 0 5 1.973 5 4.425 0 2.451-2.23 4.425-5 4.425H64.218a41.91 41.91 0 00-.482 6.344v.68h55.088c2.77 0 5 1.974 5 4.426 0 2.451-2.23 4.425-5 4.425H63.736v7.025h55.088c2.77 0 5 1.973 5 4.425 0 2.451-2.23 4.425-5 4.425H63.736v29.24c0 22.86 18.404 41.264 41.264 41.264 22.86 0 41.264-18.404 41.264-41.264V41.264C146.264 18.404 127.86 0 105 0z" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-miterlimit="4.1" paint-order="markers fill stroke"/></svg>';
-    micButton.style.position = 'fixed';
-    micButton.style.top = '20px';
-    micButton.style.right = '20px';
-    micButton.style.padding = '10px';
-    micButton.style.backgroundColor = 'red';
-    micButton.style.color = 'white';
-    micButton.style.border = 'none';
-    micButton.style.borderRadius = '50%';
-    micButton.style.cursor = 'pointer';
-    micButton.style.zIndex = '10000';
+ 
     document.body.appendChild(micButton);
+    micButton.innerHTML = '<svg id="mic2" width="15" height="20"  viewBox="0 0 91.539 237.393" xmlns="http://www.w3.org/2000/svg"><g paint-order="markers fill stroke"><path d="M24.412 113.13l7.332 124.263h28.051l7.332-124.264c-6.94 2.054-14.13 4.687-21.358 4.691-7.227-.005-14.418-2.637-21.357-4.69z"/><path d="M45.77 0A45.77 56.691 0 000 56.691a45.77 56.691 0 00.686 9.326 97.17 52.464 0 0045.083 6.096 97.17 52.464 0 0045.066-5.999 45.77 56.691 0 00.704-9.423A45.77 56.691 0 0045.77 0zM1.552 70.951a45.77 56.691 0 0044.216 42.432A45.77 56.691 0 0089.967 71.06a105 56.691 0 01-44.198 5.28 105 56.691 0 01-44.216-5.39z"/></g></svg>';
 
+    // Speech recognition setup
     const recognition = new SpeechRecognition();
-    recognition.lang = 'cs-CZ';
+    recognition.lang = 'cs-CZ'; // Set language to Czech
     recognition.continuous = false;
     recognition.interimResults = false;
 
     let isListening = false;
     let currentFocusedElement = null;
 
+    // Track mouse movement to update mic button position
+    document.addEventListener('mousemove', (event) => {
+      const vrch = event.clientY -20;
+        micButton.style.top =  `${vrch}px`;
+    });
     const toggleRecognition = () => {
       if (isListening) {
         recognition.stop();
-        micButton.style.backgroundColor = 'red';
+        micButton.classList.add('active');
         isListening = false;
       } else {
         recognition.start();
-        micButton.style.backgroundColor = 'green';
+        micButton.classList.remove('active');
         isListening = true;
       }
-    };
-
+    }; 
     micButton.addEventListener('click', toggleRecognition);
 
     document.addEventListener('keydown', (event) => {
@@ -246,7 +255,7 @@
         toggleRecognition();
       }
     });
-
+    // Handle speech recognition results
     recognition.addEventListener('result', (event) => {
       let transcript = '';
       for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -254,7 +263,7 @@
           transcript += event.results[i][0].transcript;
         }
       }
-console.log(transcript);
+
       if (currentFocusedElement) {
         if (currentFocusedElement.isContentEditable) {
           currentFocusedElement.innerHTML += transcript;
@@ -276,10 +285,4 @@ console.log(transcript);
     }, true);
 
   })();
-
-  function deletePage(pageId) {
-    return fetch(`/pages/delete/${pageId}`, {
-      method: 'GET'
-    });
-  }
   </script>

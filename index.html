@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .api-form {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        #responseContainer {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>API Tester</h1>
+    <div id="routesContainer">
+        
+        <div class="api-form" data-method="GET" data-path="/api/pages">
+            <h3>GET all pages</h3>
+            <h4>GET /api/pages</h4>
+            
+            <textarea placeholder="Request Body (JSON)">{
+  ";\r\n  const newContent = { content": "1wS4D"
+}</textarea>
+            
+            <button type="button">Send</button>
+        </div>
+        
+        <div class="api-form" data-method="DELETE" data-path="/api/pages/:id">
+            <h3>DELETE page</h3>
+            <h4>DELETE /api/pages/:id</h4>
+            
+            <textarea placeholder="Request Body (JSON)">{
+  ";\r\n\r\n  connection.query('UPDATE content SET content = ? WHERE id = ?'": "eAHIB",
+  "[content": "yYGiE",
+  "id]": "7Mgjf",
+  "(err) => {\r\n    if (err) {\r\n      console.error('Error updating content:'": "EQuh1",
+  "err);\r\n      res.status(500).send('Error updating content');\r\n      return;": "ncRxW"
+}</textarea>
+            
+            <button type="button">Send</button>
+        </div>
+        
+        <div class="api-form" data-method="GET" data-path="/api/settings">
+            <h3>GET all settings</h3>
+            <h4>GET /api/settings</h4>
+            
+            <textarea placeholder="Request Body (JSON)">{
+  ";\r\n\r\n  connection.query('INSERT INTO crudsettings (type": "uBQie",
+  "param": "4FXFO",
+  "value) VALUES (?": "6sDt8",
+  "?": "hDby3",
+  "?)'": "lZgt6",
+  "[type": "Mqha1",
+  "value]": "J1XUD",
+  "(err) => {\r\n    if (err) {\r\n      console.error('Error creating setting:'": "DuYe8",
+  "err);\r\n      res.status(500).json({ error: 'Error creating setting'": "RlBM4"
+}</textarea>
+            
+            <button type="button">Send</button>
+        </div>
+        
+        <div class="api-form" data-method="PUT" data-path="/api/settings/:id">
+            <h3>PUT update setting</h3>
+            <h4>PUT /api/settings/:id</h4>
+            
+            <textarea placeholder="Request Body (JSON)">{
+  ";\r\n\r\n  connection.query('UPDATE crudsettings SET param = ?": "4WjuQ",
+  "value = ? WHERE id = ?'": "f1oNC",
+  "[param": "Kuosf",
+  "value": "MSUvS",
+  "id]": "SL9gj",
+  "(err) => {\r\n    if (err) {\r\n      console.error('Error updating setting:'": "5X0bQ",
+  "err);\r\n      res.status(500).json({ error: 'Error updating setting'": "bwPUT"
+}</textarea>
+            
+            <button type="button">Send</button>
+        </div>
+        
+    </div>
+    <div id="responseContainer">
+        <h2>Response</h2>
+        <pre id="response"></pre>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const routesContainer = document.getElementById('routesContainer');
+            routesContainer.querySelectorAll('.api-form').forEach(form => {
+                form.querySelector('button').addEventListener('click', async () => {
+                    const method = form.dataset.method;
+                    let path = form.dataset.path;
+                    const bodyTextarea = form.querySelector('textarea');
+                    const body = bodyTextarea ? JSON.parse(bodyTextarea.value) : null;
+
+                    try {
+                        const response = await fetch(`http://localhost:3000${path}`, {
+                            method,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: method === 'GET' || method === 'DELETE' ? null : JSON.stringify(body),
+                        });
+                        const responseData = await response.json();
+                        document.getElementById('response').textContent = JSON.stringify(responseData, null, 2);
+                    } catch (error) {
+                        document.getElementById('response').textContent = 'Error: ' + error.message;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

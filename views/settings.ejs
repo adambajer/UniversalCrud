@@ -1,16 +1,16 @@
 <%- include('header.ejs') %>
 <style>
-    .link-danger.active {
+    .link-dark.active {
         transform: translateY(1px);
         border: 1px solid #dc3545 !important;
         border-bottom: 1px solid white !important;
     }
 </style>
-<div class="bg-transparent border-primary bg-opacity-50 toastcustom">
-  <div class="toast bg-transparent border-primary-subtle bg-opacity-50" role="alert" aria-live="assertive"
+<div class="bg-transparent border-dark bg-opacity-50 toastcustom">
+  <div class="toast border-dark-subtle bg-opacity-50" role="alert" aria-live="assertive"
     aria-atomic="true">
-    <div class="toast-header border-bottom border-primary-subtle">
-      <strong class="text-primary me-auto">Error!</strong>
+    <div class="r border-bottom border-dark-subtle">
+      <strong class="text-dark me-auto">Error!</strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body"></div>
@@ -18,11 +18,11 @@
 </div>
 <%- include('navbar.ejs') %>
 
-<div class="row align-items-center bg-danger-subtle pruh ps-3 border-bottom border-danger">
+<div class="row bg-white align-items-center border-bottom  pruh ps-3 ">
   <div class="col-md-4"> 
-    <ul class="d-inline-flex nav nav-tabs" id="myTab" role="tablist">
+    <ul class="d-inline-flex  bg-white nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link link-danger active" id="1-tab" data-bs-toggle="tab" 
+        <button class="nav-link link-dark active" id="1-tab" data-bs-toggle="tab" 
             data-bs-target="#1-pane"
             type="button" role="tab" 
             aria-controls="1-pane" aria-selected="true">
@@ -30,7 +30,7 @@
         </button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link link-danger " id="2-tab" data-bs-toggle="tab" 
+        <button class="nav-link link-dark " id="2-tab" data-bs-toggle="tab" 
             data-bs-target="#2-pane"
             type="button" role="tab" 
             aria-controls="2-pane" aria-selected="false">
@@ -38,7 +38,7 @@
         </button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link link-danger " id="profile-tab" data-bs-toggle="tab" 
+        <button class="nav-link link-dark " id="profile-tab" data-bs-toggle="tab" 
             data-bs-target="#profile-tab-pane"
             type="button" role="tab" 
             aria-controls="profile-tab-pane" aria-selected="false">
@@ -46,7 +46,7 @@
         </button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link link-danger " id="contact-tab" data-bs-toggle="tab" 
+        <button class="nav-link link-dark " id="contact-tab" data-bs-toggle="tab" 
             data-bs-target="#contact-tab-pane"
             type="button" role="tab" 
             aria-controls="contact-tab-pane" aria-selected="false">
@@ -61,13 +61,13 @@
 </div>
 
   <div class="col-md-4 text-end">
-    <a href="" class="text-danger p-2 d-inline-block" data-bs-toggle="collapse"
+    <a href="" class="text-dark p-2 d-inline-block" data-bs-toggle="collapse"
       data-bs-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
       <i class="bi bi-info-circle-fill"></i>
 
     </a>
     <a href=""
-                class=" bg-danger text-white p-2 d-inline-block"
+                class=" bg-dark text-white p-2 d-inline-block"
                  data-bs-toggle="modal"
                     data-bs-target="#addSetting">
                     New parameter </a>
@@ -81,7 +81,7 @@
         id="1-pane" role="tabpanel" 
         aria-labelledby="1-tab" tabindex="0">
         <div class="table-container d-block">
-            <table class="table table-secondary table-striped">
+            <table class="table table-dark table-striped">
               <% if (typeof settingsData==='undefined' || settingsData.length===0) { %>
                 <!-- Handle empty table case -->
               <% } else { %>
@@ -163,7 +163,7 @@
               <% } %>
             </table>
             <% if (typeof settingsData==='undefined' || settingsData.length===0) { %>
-              <h5 class="text-primary">No settings available.</h5>
+              <h5 class="text-dark">No settings available.</h5>
             <% } %>
           </div>
           
@@ -172,7 +172,7 @@
         id="2-pane" role="tabpanel" 
         aria-labelledby="2-tab" tabindex="0">
         <div class="table-container d-block">
-            <table class="table table-secondary table-striped">
+            <table class="table table-dark table-striped">
               <% if (typeof settingsData==='undefined' || settingsData.length===0) { %>
                 <!-- Handle empty table case -->
               <% } else { %>
@@ -248,7 +248,7 @@
               <% } %>
             </table>
             <% if (typeof settingsData==='undefined' || settingsData.length===0) { %>
-              <h5 class="text-primary">No settings available.</h5>
+              <h5 class="text-dark">No settings available.</h5>
             <% } %>
           </div>
         </div>
@@ -261,8 +261,8 @@
   <div class="modal fade" id="addSetting" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog  ">
       <div class="modal-content bg-transparent bg-opacity-50">
-        <div class="modal-header bg-danger">
-          <p class="text-danger text-white m-0">New parameter</p>
+        <div class="modal-header bg-dark">
+          <p class="text-dark text-white m-0">New parameter</p>
           <button type="button" class="btn-close shadow bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <div class="modal-body">
@@ -273,17 +273,17 @@
             <div class="m-2 form-group d-flex">
               
               <label class="pb-1 text d-block" for="type">Type</label>
-              <select class="ms-3 form-control border-danger" id="type" name="type">
+              <select class="ms-3 form-control border-dark" id="type" name="type">
                 <option value="site">site</option>
                 <option value="color">color</option>
               </select>      
                 <label class="ms-3 pb-1 text d-block" for="Parameter">Parameter</label>
-                <input type="text" class="ms-3 form-control border-danger" id="param" name="param"
+                <input type="text" class="ms-3 form-control border-dark" id="param" name="param"
                     placeholder="Enter Parameter">      
                    
                 <label class="ms-3 pb-1 text d-block" for="Value">Value</label>
-                <input type="text" class="ms-3 form-control border-danger" id="value" name="value" placeholder="Enter Value">
-                <button type="submit" class="ms-3 btn btn-danger text-white">Add</button>
+                <input type="text" class="ms-3 form-control border-dark" id="value" name="value" placeholder="Enter Value">
+                <button type="submit" class="ms-3 btn btn-dark text-white">Add</button>
             </div>
         
         </div> 
